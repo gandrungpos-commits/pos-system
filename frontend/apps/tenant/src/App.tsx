@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, NavLink 
 import { Provider, useSelector } from 'react-redux';
 import { store } from './store';
 import type { RootState } from './store';
-import { useAuth } from '@pos/utils';
 import { LoginPage } from './pages/LoginPage';
 import DashboardPage from './pages/Dashboard/DashboardPage';
 import RevenuePage from './pages/Revenue/RevenuePage';
@@ -13,37 +12,58 @@ import StaffPage from './pages/Staff/StaffPage';
 import SettingsPage from './pages/Settings/SettingsPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [hasAccess, setHasAccess] = React.useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!loading && !user) {
-      navigate('/login');
+    // Check if tenant code is stored in localStorage
+    const tenantCode = localStorage.getItem('tenant_code');
+    const tenantId = localStorage.getItem('tenantId');
+    
+    if (!tenantCode || !tenantId) {
+      navigate('/');
+      setHasAccess(false);
+    } else {
+      setHasAccess(true);
     }
-  }, [user, loading, navigate]);
+  }, [navigate]);
 
-  if (loading) {
+  if (hasAccess === null) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pos-primary border-t-transparent mb-4"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     );
   }
 
-  return user ? <>{children}</> : <Navigate to="/login" />;
+  return hasAccess ? <>{children}</> : <Navigate to="/" />;
 }
 
 function TenantLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
   const [showMenu, setShowMenu] = React.useState(false);
+  const [tenantName, setTenantName] = React.useState('');
+
+  React.useEffect(() => {
+    const tenantDataStr = localStorage.getItem('tenant_data');
+    if (tenantDataStr) {
+      try {
+        const tenantData = JSON.parse(tenantDataStr);
+        setTenantName(tenantData.name || '');
+      } catch (err) {
+        console.error('Error parsing tenant_data:', err);
+      }
+    }
+  }, []);
   
-  const handleLogout = async () => {
-    await signOut();
-    window.location.href = '/login';
+  const handleLogout = () => {
+    localStorage.removeItem('tenant_code');
+    localStorage.removeItem('tenantId');
+    localStorage.removeItem('tenant_data');
+    window.location.href = '/';
   };
   
   return (
@@ -59,7 +79,10 @@ function TenantLayout({ children }: { children: React.ReactNode }) {
             >
               📊
             </button>
-            <h1 className="text-2xl font-bold text-pos-primary">🏪 GAN-POS Tenant</h1>
+            <div>
+              <h1 className="text-2xl font-bold text-pos-primary">🏪 GAN-POS</h1>
+              {tenantName && <p className="text-sm text-gray-600 mt-1">{tenantName}</p>}
+            </div>
           </div>
           
           <div className="flex items-center gap-4">
@@ -171,7 +194,7 @@ function TenantLayout({ children }: { children: React.ReactNode }) {
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
       <Route
         path="/orders"
         element={
@@ -232,7 +255,6 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route path="/" element={<Navigate to="/orders" />} />
     </Routes>
   );
 }
