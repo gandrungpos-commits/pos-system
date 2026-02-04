@@ -6,6 +6,7 @@
   "pnpm": {
     "workspaces": [
       "backend",
+      "packages/*",
       "frontend/apps/*",
       "frontend/packages/*"
     ]

@@ -1,6 +1,7 @@
 {
-  "buildCommand": "cd ../../.. && pnpm install --no-frozen-lockfile && cd frontend/apps/admin && pnpm run build",
+  "buildCommand": "cd ../../.. && pnpm install && cd frontend/apps/admin && pnpm run build",
   "outputDirectory": "dist",
-  "devCommand": "pnpm dev"
+  "devCommand": "pnpm dev",
+  "installCommand": "cd ../../.. && pnpm install --no-frozen-lockfile"
 }
 
