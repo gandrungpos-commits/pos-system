@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  body {
+    @apply bg-white text-gray-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+  }
+  .btn-primary {
+    @apply btn bg-pos-primary text-white hover:bg-red-600;
+  }
+  .btn-secondary {
+    @apply btn bg-pos-secondary text-white hover:bg-teal-600;
+  }
+  .btn-outline {
+    @apply btn border border-gray-300 hover:bg-gray-50;
+  }
+  .btn-sm {
+    @apply px-3 py-1 text-sm;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-lg;
+  }
+  .card {
+    @apply bg-white rounded-lg shadow-md p-4;
+  }
+  .card-lg {
+    @apply bg-white rounded-lg shadow-lg p-6;
+  }
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pos-primary;
+  }
+}
+
+@layer utilities {
+  .truncate-lines-2 {
+    @apply line-clamp-2;
+  }
+  .truncate-lines-3 {
+    @apply line-clamp-3;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+  
+  /* Display Monitor specific */
+  .kiosk-mode {
+    @apply fixed inset-0 overflow-hidden;
+  }
+  
+  .order-card-display {
+    @apply transform transition-all duration-300 hover:scale-105;
+  }
+  
+  .pulse-animation {
+    @apply animate-pulse;
+  }
+}

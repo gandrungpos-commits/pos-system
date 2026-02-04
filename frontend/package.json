@@ -1,0 +1,37 @@
+{
+  "name": "pos-system-frontend",
+  "version": "1.0.0",
+  "description": "POS System Frontend - React Monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "dev:admin": "pnpm --filter @pos/admin dev",
+    "dev:kasir": "pnpm --filter @pos/kasir dev",
+    "dev:customer": "pnpm --filter @pos/customer dev",
+    "dev:display": "pnpm --filter @pos/display-monitor dev",
+    "dev:tenant": "pnpm --filter @pos/tenant dev",
+    "build": "pnpm -r build",
+    "build:kasir": "pnpm --filter @pos/kasir build",
+    "build:customer": "pnpm --filter @pos/customer build",
+    "build:display": "pnpm --filter @pos/display-monitor build",
+    "build:tenant": "pnpm --filter @pos/tenant build",
+    "preview": "pnpm -r preview",
+    "test": "pnpm -r test",
+    "test:ui": "pnpm -r test:ui",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0",
+    "turbo": "^1.10.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "react": "18.2.0",
+      "react-dom": "18.2.0"
+    }
+  }
+}

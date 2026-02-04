@@ -1,0 +1,10 @@
+{
+  "name": "@pos/utils",
+  "version": "1.0.0",
+  "description": "Shared utilities for POS system",
+  "type": "module",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.4"
+  }
+}

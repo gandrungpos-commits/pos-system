@@ -1,0 +1,24 @@
+{
+  "name": "pos-system",
+  "version": "1.0.0",
+  "description": "POS System - Point of Sale Management Platform",
+  "private": true,
+  "pnpm": {
+    "workspaces": [
+      "backend",
+      "frontend/apps/*",
+      "frontend/packages/*"
+    ]
+  },
+  "scripts": {
+    "install:all": "pnpm install",
+    "dev:admin": "cd frontend/apps/admin && pnpm dev",
+    "dev:superadmin": "cd frontend/apps/superadmin && pnpm dev",
+    "test:admin": "cd frontend/apps/admin && pnpm test:run",
+    "test:superadmin": "cd frontend/apps/superadmin && pnpm test:run",
+    "test:all": "pnpm run test:admin && pnpm run test:superadmin"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.94.0"
+  }
+}
