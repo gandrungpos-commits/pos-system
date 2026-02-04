@@ -17,7 +17,7 @@ export function LoginPage() {
       const tenantCode = code.toUpperCase().trim();
       
       if (!tenantCode) {
-        setError('Masukkan kode sandi tenant');
+        setError('Masukkan kode akses restoran');
         setIsLoading(false);
         return;
       }
@@ -46,7 +46,7 @@ export function LoginPage() {
       }
 
       if (!tenantData) {
-        setError('Kode sandi tenant tidak valid. Silakan cek kembali.');
+        setError('Kode akses tidak valid. Silakan cek kembali.');
         setIsLoading(false);
         return;
       }
@@ -64,7 +64,7 @@ export function LoginPage() {
       // Redirect ke dashboard
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Login gagal. Silakan coba lagi.');
+      setError(err.message || 'Akses gagal. Silakan coba lagi.');
       setIsLoading(false);
     }
   };
@@ -87,7 +87,7 @@ export function LoginPage() {
 
       const demoTenant = demoTenants[demoCode];
       if (!demoTenant) {
-        setError('Demo tenant tidak ditemukan.');
+        setError('Demo restoran tidak ditemukan.');
         setIsLoading(false);
         return;
       }
@@ -103,7 +103,7 @@ export function LoginPage() {
 
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Demo login gagal.');
+      setError(err.message || 'Akses gagal. Silakan coba lagi.');
       setIsLoading(false);
     }
   };
@@ -116,7 +116,7 @@ export function LoginPage() {
           <div className="text-center mb-8">
             <div className="text-5xl mb-4">🏪</div>
             <h1 className="text-3xl font-bold text-slate-900">POS Tenant</h1>
-            <p className="text-slate-600 mt-2">Login dengan Kode Sandi</p>
+            <p className="text-slate-600 mt-2">Masukkan Kode Akses Restoran</p>
           </div>
 
           {/* Error Message */}
@@ -130,7 +130,7 @@ export function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="code" className="block text-sm font-semibold text-slate-700 mb-2">
-                Kode Sandi Tenant
+                Kode Akses
               </label>
               <input
                 id="code"
