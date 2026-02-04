@@ -2,6 +2,7 @@
   "buildCommand": "cd ../../.. && pnpm install --recursive --no-frozen-lockfile && cd frontend/apps/tenant && pnpm run build",
   "outputDirectory": "dist",
   "devCommand": "pnpm dev",
+  "installCommand": "cd ../../.. && pnpm install --no-frozen-lockfile --recursive",
   "rewrites": [
     {
       "source": "/(.*)",
