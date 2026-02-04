@@ -8,6 +8,7 @@ export default function OrdersPage() {
   const [showNewOrderModal, setShowNewOrderModal] = useState(false);
   const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const [tenantId, setTenantId] = useState<number>(1);
   const [newOrder, setNewOrder] = useState({
     customer: '',
     phone: '',
@@ -15,15 +16,28 @@ export default function OrdersPage() {
   });
   const [saveLoading, setSaveLoading] = useState(false);
 
+  // Get tenant ID from localStorage
+  useEffect(() => {
+    const storedTenantId = localStorage.getItem('tenantId');
+    if (storedTenantId) {
+      setTenantId(parseInt(storedTenantId));
+    }
+  }, []);
+
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await db.getOrders();
-      if (response.error) {
-        console.error('Error fetching orders:', response.error);
+      const { data, error } = await db
+        .from('transactions')
+        .select('*')
+        .eq('tenant_id', tenantId)
+        .order('date', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching orders:', error);
         setOrders([]);
       } else {
-        setOrders(response.data || []);
+        setOrders(data || []);
       }
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -34,8 +48,10 @@ export default function OrdersPage() {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    if (tenantId) {
+      fetchOrders();
+    }
+  }, [tenantId]);
 
   const filteredOrders = Array.isArray(orders) && statusFilter === 'all' 
     ? orders 

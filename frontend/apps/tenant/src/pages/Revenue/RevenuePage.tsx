@@ -8,12 +8,28 @@ export default function RevenuePage() {
     orderCount: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [tenantId, setTenantId] = useState<number>(1);
+
+  // Get tenant ID from localStorage
+  useEffect(() => {
+    const storedTenantId = localStorage.getItem('tenantId');
+    if (storedTenantId) {
+      setTenantId(parseInt(storedTenantId));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchRevenueData = async () => {
       try {
-        const orders = await db.getOrders();
-        const totalRevenue = orders?.reduce((sum, order) => sum + (order.total_amount || 0), 0) || 0;
+        const { data: orders, error } = await db
+          .from('transactions')
+          .select('*')
+          .eq('tenant_id', tenantId)
+          .eq('type', 'Revenue');
+
+        if (error) throw error;
+
+        const totalRevenue = orders?.reduce((sum, order) => sum + (order.amount || 0), 0) || 0;
         
         setRevenueData({
           totalRevenue,
@@ -26,8 +42,10 @@ export default function RevenuePage() {
       }
     };
 
-    fetchRevenueData();
-  }, [period]);
+    if (tenantId) {
+      fetchRevenueData();
+    }
+  }, [period, tenantId]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {

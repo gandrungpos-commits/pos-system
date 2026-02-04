@@ -11,18 +11,36 @@ export default function DashboardPage() {
   });
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [tenantId, setTenantId] = useState<number>(1);
+
+  // Get tenant ID from localStorage
+  useEffect(() => {
+    const storedTenantId = localStorage.getItem('tenantId');
+    if (storedTenantId) {
+      setTenantId(parseInt(storedTenantId));
+    }
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch orders data
-        const response = await db.getOrders();
-        const ordersData = response.data || [];
+        setLoading(true);
+        // Fetch transactions data (using transactions table for revenue)
+        const { data: transactionsData, error } = await db
+          .from('transactions')
+          .select('*')
+          .eq('tenant_id', tenantId)
+          .eq('type', 'Revenue')
+          .order('date', { ascending: false });
+
+        if (error) throw error;
+
+        const ordersData = transactionsData || [];
         setOrders(ordersData);
 
         // Calculate stats
         const totalOrders = ordersData?.length || 0;
-        const totalRevenue = ordersData?.reduce((sum, order) => sum + (order.total_amount || 0), 0) || 0;
+        const totalRevenue = ordersData?.reduce((sum, order) => sum + (order.amount || 0), 0) || 0;
         const avgOrder = totalOrders > 0 ? totalRevenue / totalOrders : 0;
         const totalDiscount = 0; // Discount tracking akan ditambah nanti
 
@@ -39,8 +57,10 @@ export default function DashboardPage() {
       }
     };
 
-    fetchData();
-  }, [selectedPeriod]);
+    if (tenantId) {
+      fetchData();
+    }
+  }, [selectedPeriod, tenantId]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
