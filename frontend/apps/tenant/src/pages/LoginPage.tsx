@@ -22,12 +22,12 @@ export function LoginPage() {
         return;
       }
 
-      // Demo tenants untuk testing
+      // Demo tenants untuk testing (matching actual database codes)
       const demoTenants: Record<string, any> = {
-        'AYAMGEPREK': { id: 1, name: 'Ayam Geprek', code: 'AYAMGEPREK' },
-        'SOTOMAKASAR': { id: 2, name: 'Soto Makasar', code: 'SOTOMAKASAR' },
-        'GADOGADO': { id: 3, name: 'Gado-Gado', code: 'GADOGADO' },
-        'MIEACEH': { id: 4, name: 'Mie Aceh', code: 'MIEACEH' },
+        'TENANT001': { id: 1, name: 'Ayam Geprek Pak Maksur', code: 'TENANT001' },
+        'TENANT002': { id: 2, name: 'Soto Makasar', code: 'TENANT002' },
+        'TENANT003': { id: 3, name: 'Gado-Gado', code: 'TENANT003' },
+        'TENANT004': { id: 4, name: 'Mie Aceh', code: 'TENANT004' },
       };
 
       let tenantData = demoTenants[tenantCode];
@@ -75,14 +75,14 @@ export function LoginPage() {
     setIsLoading(true);
 
     try {
-      const demoCode = 'AYAMGEPREK';
+      const demoCode = 'TENANT001';
       
-      // Demo tenants
+      // Demo tenants (matching actual database codes)
       const demoTenants: Record<string, any> = {
-        'AYAMGEPREK': { id: 1, name: 'Ayam Geprek', code: 'AYAMGEPREK' },
-        'SOTOMAKASAR': { id: 2, name: 'Soto Makasar', code: 'SOTOMAKASAR' },
-        'GADOGADO': { id: 3, name: 'Gado-Gado', code: 'GADOGADO' },
-        'MIEACEH': { id: 4, name: 'Mie Aceh', code: 'MIEACEH' },
+        'TENANT001': { id: 1, name: 'Ayam Geprek Pak Maksur', code: 'TENANT001' },
+        'TENANT002': { id: 2, name: 'Soto Makasar', code: 'TENANT002' },
+        'TENANT003': { id: 3, name: 'Gado-Gado', code: 'TENANT003' },
+        'TENANT004': { id: 4, name: 'Mie Aceh', code: 'TENANT004' },
       };
 
       const demoTenant = demoTenants[demoCode];
