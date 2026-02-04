@@ -14,6 +14,7 @@
   "scripts": {
     "install:all": "pnpm install",
     "dev:admin": "cd frontend/apps/admin && pnpm dev",
+    "dev:tenant": "cd frontend/apps/tenant && pnpm dev",
     "dev:superadmin": "cd frontend/apps/superadmin && pnpm dev",
     "test:admin": "cd frontend/apps/admin && pnpm test:run",
     "test:superadmin": "cd frontend/apps/superadmin && pnpm test:run",

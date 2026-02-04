@@ -22,14 +22,30 @@ export function LoginPage() {
         return;
       }
 
-      // Query Supabase untuk mencari tenant dengan kode ini
-      const { data, error: queryError } = await db
-        .from('tenants')
-        .select('id, name, code')
-        .eq('code', tenantCode)
-        .single();
+      // Demo tenants untuk testing
+      const demoTenants: Record<string, any> = {
+        'AYAMGEPREK': { id: 1, name: 'Ayam Geprek', code: 'AYAMGEPREK' },
+        'SOTOMAKASAR': { id: 2, name: 'Soto Makasar', code: 'SOTOMAKASAR' },
+        'GADOGADO': { id: 3, name: 'Gado-Gado', code: 'GADOGADO' },
+        'MIEACEH': { id: 4, name: 'Mie Aceh', code: 'MIEACEH' },
+      };
 
-      if (queryError || !data) {
+      let tenantData = demoTenants[tenantCode];
+
+      // Jika tidak ada di demo, coba query Supabase
+      if (!tenantData) {
+        const { data, error: queryError } = await db
+          .from('tenants')
+          .select('id, name, code')
+          .eq('code', tenantCode)
+          .single();
+
+        if (!queryError && data) {
+          tenantData = data;
+        }
+      }
+
+      if (!tenantData) {
         setError('Kode sandi tenant tidak valid. Silakan cek kembali.');
         setIsLoading(false);
         return;
@@ -37,11 +53,11 @@ export function LoginPage() {
 
       // Simpan tenant info ke localStorage
       localStorage.setItem('tenant_code', tenantCode);
-      localStorage.setItem('tenantId', data.id.toString());
+      localStorage.setItem('tenantId', tenantData.id.toString());
       localStorage.setItem('tenant_data', JSON.stringify({
-        id: data.id,
-        name: data.name,
-        code: data.code,
+        id: tenantData.id,
+        name: tenantData.name,
+        code: tenantData.code,
         loginTime: new Date().toISOString(),
       }));
 
@@ -55,30 +71,33 @@ export function LoginPage() {
 
   const handleDemoLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setCode('TENANT001');
     setError('');
     setIsLoading(true);
 
     try {
-      // Query Supabase untuk demo tenant
-      const { data, error: queryError } = await db
-        .from('tenants')
-        .select('id, name, code')
-        .eq('code', 'TENANT001')
-        .single();
+      const demoCode = 'AYAMGEPREK';
+      
+      // Demo tenants
+      const demoTenants: Record<string, any> = {
+        'AYAMGEPREK': { id: 1, name: 'Ayam Geprek', code: 'AYAMGEPREK' },
+        'SOTOMAKASAR': { id: 2, name: 'Soto Makasar', code: 'SOTOMAKASAR' },
+        'GADOGADO': { id: 3, name: 'Gado-Gado', code: 'GADOGADO' },
+        'MIEACEH': { id: 4, name: 'Mie Aceh', code: 'MIEACEH' },
+      };
 
-      if (queryError || !data) {
+      const demoTenant = demoTenants[demoCode];
+      if (!demoTenant) {
         setError('Demo tenant tidak ditemukan.');
         setIsLoading(false);
         return;
       }
 
-      localStorage.setItem('tenant_code', 'TENANT001');
-      localStorage.setItem('tenantId', data.id.toString());
+      localStorage.setItem('tenant_code', demoCode);
+      localStorage.setItem('tenantId', demoTenant.id.toString());
       localStorage.setItem('tenant_data', JSON.stringify({
-        id: data.id,
-        name: data.name,
-        code: data.code,
+        id: demoTenant.id,
+        name: demoTenant.name,
+        code: demoTenant.code,
         loginTime: new Date().toISOString(),
       }));
 
