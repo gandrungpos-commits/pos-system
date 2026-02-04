@@ -1,3 +1,16 @@
+// Supabase client - must be at top of file before other exports
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://vbclcsccuzcgrxedzpej.supabase.co';
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY || 'sb_publishable_0ZMziQhXB9SKGQgD9voFvA_rYaE18Bb';
+
+if (!supabaseUrl || !supabaseKey) {
+  console.warn('⚠️ Supabase credentials not found in environment variables');
+}
+
+export const supabase = createClient(supabaseUrl, supabaseKey);
+export const db = supabase;
+
 export function formatCurrency(amount: number, currency: string = 'IDR'): string {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -5,15 +18,6 @@ export function formatCurrency(amount: number, currency: string = 'IDR'): string
     minimumFractionDigits: 0,
   }).format(amount);
 }
-
-// Supabase client
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY || '';
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
-export const db = supabase;
 
 export function formatDate(date: string | Date): string {
   return new Intl.DateTimeFormat('id-ID', {
