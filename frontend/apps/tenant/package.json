@@ -14,10 +14,10 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@pos/api-client": "*",
-    "@pos/hooks": "*",
-    "@pos/types": "*",
-    "@pos/utils": "*",
+    "@pos/api-client": "workspace:*",
+    "@pos/hooks": "workspace:*",
+    "@pos/types": "workspace:*",
+    "@pos/utils": "workspace:*",
     "@reduxjs/toolkit": "^1.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
