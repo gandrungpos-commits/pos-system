@@ -34,19 +34,29 @@ export function LoginPage() {
 
       // Jika tidak ada di demo, coba query Supabase
       if (!tenantData) {
-        const { data, error: queryError } = await db
-          .from('tenants')
-          .select('id, name, code')
-          .eq('code', tenantCode)
-          .single();
+        try {
+          const { data, error: queryError } = await db
+            .from('tenants')
+            .select('id, name, code')
+            .eq('code', tenantCode)
+            .single();
 
-        if (!queryError && data) {
-          tenantData = data;
+          if (queryError) {
+            console.error('❌ Supabase Query Error:', queryError);
+            console.warn('Demo codes available: TENANT001, TENANT002, TENANT003, TENANT004');
+          } else if (data) {
+            console.log('✅ Tenant found in Supabase:', data);
+            tenantData = data;
+          } else {
+            console.warn('⚠️ No tenant found with code:', tenantCode);
+          }
+        } catch (err) {
+          console.error('❌ Supabase connection error:', err);
         }
       }
 
       if (!tenantData) {
-        setError('Kode akses tidak valid. Silakan cek kembali.');
+        setError('Kode akses tidak valid. Gunakan: TENANT001, TENANT002, TENANT003, atau TENANT004');
         setIsLoading(false);
         return;
       }
